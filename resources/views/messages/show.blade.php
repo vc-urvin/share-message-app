@@ -37,12 +37,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Replace URL in browser history with viewed version
-        if (window.history && window.history.replaceState) {
-            window.history.replaceState({}, document.title, "{{ $newUrl }}");
-        }
-    </script>
 </body>
 </html>
