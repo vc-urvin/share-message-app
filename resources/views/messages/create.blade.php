@@ -59,9 +59,12 @@
                 <div class="space-y-3">
                     <button 
                         @click="copyToClipboard" 
-                        class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition duration-200"
+                        :class="[
+                            'w-full text-white py-3 px-4 rounded-lg transition duration-200',
+                            copied ? 'bg-gray-600 hover:bg-gray-700' : 'bg-green-600 hover:bg-green-700'
+                        ]"
                     >
-                        Copy to Clipboard
+                        @{{ copied ? 'Copied!' : 'Copy to Clipboard' }}
                     </button>
                     
                     <button 
@@ -88,7 +91,8 @@
                 return {
                     message: '',
                     generatedUrl: null,
-                    loading: false
+                    loading: false,
+                    copied: false
                 }
             },
             methods: {
@@ -110,7 +114,10 @@
                 async copyToClipboard() {
                     try {
                         await navigator.clipboard.writeText(this.generatedUrl);
-                        alert('Link copied to clipboard!');
+                        this.copied = true;
+                        setTimeout(() => {
+                            this.copied = false;
+                        }, 2000); // Reset after 2 seconds
                     } catch (err) {
                         alert('Failed to copy link. Please copy it manually.');
                     }
@@ -118,6 +125,7 @@
                 reset() {
                     this.message = '';
                     this.generatedUrl = null;
+                    this.copied = false;
                 }
             }
         }).mount('#app')
